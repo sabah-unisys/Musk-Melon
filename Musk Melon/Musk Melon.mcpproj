@@ -57,6 +57,18 @@
       <MCPCompilerOptionCheck Condition=" '$(Configuration)' == 'Release' ">False</MCPCompilerOptionCheck>
       <MCPCompileOptions Condition=" '$(Configuration)' == 'Release' ">00000000</MCPCompileOptions>
     </None>
+    <None Include="COBOL\GENERAL\HELLOWORLD.c85_m">
+      <PatchMode>None</PatchMode>
+      <RelativePath>LocalFile</RelativePath>
+      <SeqDataMarkID>False</SeqDataMarkID>
+      <MCPBuildType Condition=" '$(Configuration)' == 'Debug' ">Default</MCPBuildType>
+      <MCPCompilerOptionCheck Condition=" '$(Configuration)' == 'Debug' ">True</MCPCompilerOptionCheck>
+      <MCPCompileOptions Condition=" '$(Configuration)' == 'Debug' ">10000000</MCPCompileOptions>
+      <MCPBuildType Condition=" '$(Configuration)' == 'Release' ">Default</MCPBuildType>
+      <MCPCompilerOptionCheck Condition=" '$(Configuration)' == 'Release' ">False</MCPCompilerOptionCheck>
+      <MCPCompileOptions Condition=" '$(Configuration)' == 'Release' ">00000000</MCPCompileOptions>
+      <MappedHostFileLocation>??TESTVM/DISK/&lt;MYUSERCODE&gt;/COBOL/EMPLOYEE/HELLOWORLD</MappedHostFileLocation>
+    </None>
     <None Include="DASDL\EMPLOYEEDB.das_m">
       <PatchMode>None</PatchMode>
       <RelativePath>LocalFile</RelativePath>
