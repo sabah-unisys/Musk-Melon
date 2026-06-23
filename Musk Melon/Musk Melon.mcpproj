@@ -1,0 +1,47 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{9c7f7001-a5e2-4da0-95d1-8b61d94a1d77}</ProjectGuid>
+    <Name>Musk Melon</Name>
+    <RootNamespace>Musk Melon</RootNamespace>
+    <VSIDVersion>15</VSIDVersion>
+  </PropertyGroup>
+  <PropertyGroup>
+    <RunPostBuildEvent />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>.\</OutputPath>
+    <MCPDebugMode>Integrated Debugging</MCPDebugMode>
+    <MCPStartType>Project</MCPStartType>
+    <MCPObjectFilePath />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+    <DebugSymbols>false</DebugSymbols>
+    <OutputPath>.\</OutputPath>
+    <MCPStartType>Project</MCPStartType>
+    <MCPObjectFilePath />
+  </PropertyGroup>
+  <ItemGroup>
+    <Folder Include="COBOL" />
+    <Folder Include="DASDL" />
+    <Folder Include="DATA" />
+    <Folder Include="WFL" />
+  </ItemGroup>
+  <PropertyGroup>
+    <PreBuildEvent />
+  </PropertyGroup>
+  <PropertyGroup>
+    <PostBuildEvent />
+  </PropertyGroup>
+  <PropertyGroup Label="OverrideMarkID">
+    <OverrideMarkIDCheck />
+    <MCPMarkIDValue />
+    <ShowTruncateWarningCheck />
+    <ApplyMarkIDToChangedLinesCheck />
+    <PreserveMarkIDCheck />
+  </PropertyGroup>
+  <Import Project="$(MSBuildExtensionsPath)\Unisys\ClearPathVisualIDE\MCPBuild.targets" />
+</Project>
