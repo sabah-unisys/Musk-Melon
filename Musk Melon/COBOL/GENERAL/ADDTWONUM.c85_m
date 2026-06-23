@@ -1,0 +1,53 @@
+001000 IDENTIFICATION DIVISION.                                                     
+002000 PROGRAM-ID.   CLASS02.                                                       
+003000 AUTHOR.       TEST.                                                          
+004000******************************************************************            
+005000*                                                                *            
+006000* COBOL CLASS - PROGRAM 02                                       *            
+007000*                                                                *            
+008000* 'Console Interaction'                                          *            
+009000*                                                                *            
+010000* Accept two Integers,                                           *            
+011000* Add them together and                                          *            
+012000* Display the result                                             *            
+013000*                                                                *            
+014000******************************************************************            
+015000 ENVIRONMENT DIVISION.                                                        
+016000 DATA DIVISION.                                                               
+017000 WORKING-STORAGE SECTION.                                                     
+018000                                                                              
+019000 01  WS-ACCEPT-1                 PIC 9(06) VALUE ZERO.                        
+020000 01  WS-ACCEPT-2                 PIC 9(06) VALUE ZERO.                        
+021000 01  WS-RESULT                   PIC 9(08) VALUE ZERO.                        
+022000                                                                              
+023000 PROCEDURE DIVISION.                                                          
+024000  S0000-PROGRAM                  SECTION.                                     
+025000   P0000-PROGRAM.                                                             
+026000                                                                              
+027000     DISPLAY "COBOL Class Program 02".                                        
+028000     DISPLAY " ".                                                             
+029000                                                                              
+030000     DISPLAY "Enter an integer between Zero and 999999".                      
+031000     ACCEPT  WS-ACCEPT-1.                                                     
+032000                                                                              
+033000     DISPLAY "Enter another integer between Zero and 999999".                 
+034000     ACCEPT  WS-ACCEPT-2.                                                     
+035000                                                                              
+036000     ADD WS-ACCEPT-1, WS-ACCEPT-2 GIVING WS-RESULT.                           
+037000                                                                              
+038000     DISPLAY "The sum of " WS-ACCEPT-1                                        
+039000                   " and " WS-ACCEPT-2                                        
+040000                    " is " WS-RESULT.                                         
+041000                                                                              
+042000*    AN ALTERNATE WAY TO DO THE SAME THING FOR THE                            
+043000*    PEOPLE THAT PREFER ALGEBRA TO ENGLISH                                    
+044000                                                                              
+045000     MOVE ZERO                   TO WS-RESULT.                                
+046000     COMPUTE WS-RESULT = WS-ACCEPT-1 + WS-ACCEPT-2.                           
+047000                                                                              
+048000     DISPLAY "The sum of " WS-ACCEPT-1                                        
+049000                   " and " WS-ACCEPT-2                                        
+050000                    " is " WS-RESULT.                                         
+051000                                                                              
+052000     STOP RUN.                                                                
+053000   P0000-EXIT. EXIT.                                                          
