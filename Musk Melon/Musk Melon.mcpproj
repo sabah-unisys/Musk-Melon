@@ -17,18 +17,72 @@
     <MCPDebugMode>Integrated Debugging</MCPDebugMode>
     <MCPStartType>Project</MCPStartType>
     <MCPObjectFilePath />
+    <CompilationOption>Single</CompilationOption>
+    <SelectedSingleFile>COBOL\EMPLOYEE\ADDEMPLOYEEDATA.c85_m</SelectedSingleFile>
+    <MultipleFileOrder />
+    <SelectedDebugFile>COBOL\EMPLOYEE\ADDEMPLOYEEDATA.c85_m</SelectedDebugFile>
+    <SelectedFileInBuildPage />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
     <DebugSymbols>false</DebugSymbols>
     <OutputPath>.\</OutputPath>
     <MCPStartType>Project</MCPStartType>
     <MCPObjectFilePath />
+    <CompilationOption>Single</CompilationOption>
+    <SelectedSingleFile>COBOL\EMPLOYEE\ADDEMPLOYEEDATA.c85_m</SelectedSingleFile>
+    <MultipleFileOrder />
+    <SelectedDebugFile>COBOL\EMPLOYEE\ADDEMPLOYEEDATA.c85_m</SelectedDebugFile>
+    <SelectedFileInBuildPage />
   </PropertyGroup>
   <ItemGroup>
     <Folder Include="COBOL" />
+    <Folder Include="COBOL\EMPLOYEE" />
+    <Folder Include="COBOL\GENERAL" />
     <Folder Include="DASDL" />
     <Folder Include="DATA" />
+    <Folder Include="DATA\LOAD" />
+    <Folder Include="DATA\LOAD\EMPLOYEEDB" />
     <Folder Include="WFL" />
+    <Folder Include="WFL\LOAD" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="COBOL\EMPLOYEE\ADDEMPLOYEEDATA.c85_m">
+      <PatchMode>None</PatchMode>
+      <RelativePath>LocalFile</RelativePath>
+      <SeqDataMarkID>False</SeqDataMarkID>
+      <MCPBuildType Condition=" '$(Configuration)' == 'Debug' ">Default</MCPBuildType>
+      <MCPCompilerOptionCheck Condition=" '$(Configuration)' == 'Debug' ">True</MCPCompilerOptionCheck>
+      <MCPCompileOptions Condition=" '$(Configuration)' == 'Debug' ">10000000</MCPCompileOptions>
+      <MCPBuildType Condition=" '$(Configuration)' == 'Release' ">Default</MCPBuildType>
+      <MCPCompilerOptionCheck Condition=" '$(Configuration)' == 'Release' ">False</MCPCompilerOptionCheck>
+      <MCPCompileOptions Condition=" '$(Configuration)' == 'Release' ">00000000</MCPCompileOptions>
+    </None>
+    <None Include="DASDL\EMPLOYEEDB.das_m">
+      <PatchMode>None</PatchMode>
+      <RelativePath>LocalFile</RelativePath>
+      <SeqDataMarkID>False</SeqDataMarkID>
+      <MCPBuildType Condition=" '$(Configuration)' == 'Debug' ">Default</MCPBuildType>
+      <MCPCompilerOptionCheck Condition=" '$(Configuration)' == 'Debug' ">True</MCPCompilerOptionCheck>
+      <MCPCompileOptions Condition=" '$(Configuration)' == 'Debug' ">10000000</MCPCompileOptions>
+      <MCPBuildType Condition=" '$(Configuration)' == 'Release' ">Default</MCPBuildType>
+      <MCPCompilerOptionCheck Condition=" '$(Configuration)' == 'Release' ">False</MCPCompilerOptionCheck>
+      <MCPCompileOptions Condition=" '$(Configuration)' == 'Release' ">00000000</MCPCompileOptions>
+    </None>
+    <None Include="DATA\LOAD\EMPLOYEEDB\EMPLOYEEDATA.dat_m">
+      <PatchMode>None</PatchMode>
+      <RelativePath>LocalFile</RelativePath>
+      <SeqDataMarkID>False</SeqDataMarkID>
+      <TotalRecordLength>80</TotalRecordLength>
+      <PatchFileLocation>
+      </PatchFileLocation>
+    </None>
+    <None Include="WFL\LOAD\ADDEMPLOYEE.wfl_m">
+      <PatchMode>None</PatchMode>
+      <RelativePath>LocalFile</RelativePath>
+      <SeqDataMarkID>False</SeqDataMarkID>
+      <MCPBuildType Condition=" '$(Configuration)' == 'Debug' ">Custom</MCPBuildType>
+      <MCPBuildType Condition=" '$(Configuration)' == 'Release' ">Custom</MCPBuildType>
+    </None>
   </ItemGroup>
   <PropertyGroup>
     <PreBuildEvent />
