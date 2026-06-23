@@ -1,0 +1,26 @@
+001000 IDENTIFICATION DIVISION.                                                     
+002000 PROGRAM-ID.   CLASS01.                                                       
+003000 AUTHOR.       TEST.                                                          
+004000*DATE-WRITTEN.                                                                
+005000******************************************************************            
+006000*                                                                *            
+007000* COBOL CLASS - PROGRAM 01                                       *            
+008000*                                                                *            
+009000* HELLO WORLD PROGRAM                                            *            
+010000*                                                                *            
+011000******************************************************************            
+012000 ENVIRONMENT DIVISION.                                                        
+013000 DATA DIVISION.                                                               
+014000 WORKING-STORAGE SECTION.                                                     
+015000                                                                              
+016000 01  WS-HELLO-LIT                PIC X(11) VALUE                              
+017000     "HELLO WORLD".                                                           
+018000                                                                              
+019000 PROCEDURE DIVISION.                                                          
+020000  S0000-PROGRAM                  SECTION.                                     
+021000   P0000-PROGRAM.                                                             
+022000                                                                              
+023000     DISPLAY WS-HELLO-LIT.                                                    
+024000                                                                              
+025000     STOP RUN.                                                                
+026000   P0000-EXIT. EXIT.                                                          
