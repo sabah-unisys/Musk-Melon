@@ -31,7 +31,7 @@ pipeline {
 
     environment {
         // Fallback target branch if Jenkins doesn't provide CHANGE_TARGET.
-        DEFAULT_TARGET = 'main'
+        DEFAULT_TARGET = 'master'
         // Space-separated MCP extensions to track. Matching is case-insensitive,
         // so listing the lowercase form also covers .C74_M, .DAS_M, etc.
         MCP_EXTENSIONS = 'c74_m c85_m das_m dat_m'
