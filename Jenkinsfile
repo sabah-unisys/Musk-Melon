@@ -2,12 +2,12 @@ pipeline {
   agent any
 
   environment {
-    GITHUB_TOKEN      = credentials('github-token')
-    GITHUB_REPO       = 'sabah-unisys/testrepo'
+    GITHUB_TOKEN      = credentials('github-token2')
+    GITHUB_REPO       = 'sabah-unisys/Musk-Melon'
     GITHUB_ORG        = 'sabah-unisys'
-    UNISYS_HOST       = credentials('unisys-host')
-    UNISYS_USER       = credentials('unisys-user')
-    UNISYS_PASS       = credentials('unisys-pass')
+    // UNISYS_HOST       = credentials('unisys-host')
+    // UNISYS_USER       = credentials('unisys-user')
+    // UNISYS_PASS       = credentials('unisys-pass')
     CHANGED_FILES_DIR = "${WORKSPACE}/changed_files"
   }
 
@@ -166,27 +166,27 @@ FILEEOF
     }
 
     // ── Stage 3 ────────────────────────────────────────────────────
-    stage('Stage WFL files') {
-      when {
-        expression {
-          fileExists("${CHANGED_FILES_DIR}/wfl_files.txt") &&
-          readFile("${CHANGED_FILES_DIR}/wfl_files.txt").trim()
-        }
-      }
-      steps {
-        script {
-          sh "mkdir -p artifacts"
-          def wflFiles = readFile("${CHANGED_FILES_DIR}/wfl_files.txt").trim()
-          wflFiles.split('\n').each { file ->
-            def name = file.trim()
-            if (name) {
-              echo "Staging WFL: ${name}"
-              sh "cp ${name} artifacts/"
-            }
-          }
-        }
-      }
-    }
+    // stage('Stage WFL files') {
+    //   when {
+    //     expression {
+    //       fileExists("${CHANGED_FILES_DIR}/wfl_files.txt") &&
+    //       readFile("${CHANGED_FILES_DIR}/wfl_files.txt").trim()
+    //     }
+    //   }
+    //   steps {
+    //     script {
+    //       sh "mkdir -p artifacts"
+    //       def wflFiles = readFile("${CHANGED_FILES_DIR}/wfl_files.txt").trim()
+    //       wflFiles.split('\n').each { file ->
+    //         def name = file.trim()
+    //         if (name) {
+    //           echo "Staging WFL: ${name}"
+    //           sh "cp ${name} artifacts/"
+    //         }
+    //       }
+    //     }
+    //   }
+    // }
 
     // ── Stage 4 ────────────────────────────────────────────────────
     stage('Wait for PR merge to main') {
@@ -244,100 +244,100 @@ FILEEOF
     }
 
     // ── Stage 5 ────────────────────────────────────────────────────
-    stage('Transfer to Unisys') {
-      steps {
-        script {
-          ['cobol_files.txt', 'wfl_files.txt'].each { txtFile ->
-            def path = "${CHANGED_FILES_DIR}/${txtFile}"
-            if (fileExists(path) && readFile(path).trim()) {
-              readFile(path).trim().split('\n').each { file ->
-                def name = file.trim()
-                if (name) {
-                  echo "Transferring: ${name}"
-                  sh """
-                    ftp -n ${UNISYS_HOST} <<EOF
-                    user ${UNISYS_USER} ${UNISYS_PASS}
-                    binary
-                    cd USERDATA/PROGRAMS
-                    put ${name}
-                    bye
-                    EOF
-                  """
-                }
-              }
-            }
-          }
-        }
-      }
-    }
+    // stage('Transfer to Unisys') {
+    //   steps {
+    //     script {
+    //       ['cobol_files.txt', 'wfl_files.txt'].each { txtFile ->
+    //         def path = "${CHANGED_FILES_DIR}/${txtFile}"
+    //         if (fileExists(path) && readFile(path).trim()) {
+    //           readFile(path).trim().split('\n').each { file ->
+    //             def name = file.trim()
+    //             if (name) {
+    //               echo "Transferring: ${name}"
+    //               sh """
+    //                 ftp -n ${UNISYS_HOST} <<EOF
+    //                 user ${UNISYS_USER} ${UNISYS_PASS}
+    //                 binary
+    //                 cd USERDATA/PROGRAMS
+    //                 put ${name}
+    //                 bye
+    //                 EOF
+    //               """
+    //             }
+    //           }
+    //         }
+    //       }
+    //     }
+    //   }
+    // }
 
     // ── Stage 6 ────────────────────────────────────────────────────
-    stage('Compile COBOL on Unisys') {
-      when {
-        expression {
-          fileExists("${CHANGED_FILES_DIR}/cobol_files.txt") &&
-          readFile("${CHANGED_FILES_DIR}/cobol_files.txt").trim()
-        }
-      }
-      steps {
-        script {
-          def cobolFiles = readFile("${CHANGED_FILES_DIR}/cobol_files.txt").trim()
-          cobolFiles.split('\n').each { file ->
-            def name = file.trim()
-            if (name) {
-              echo "Compiling COBOL on Unisys: ${name}"
-              sh """
-                expect -c '
-                  spawn telnet ${UNISYS_HOST}
-                  expect "Userid:"
-                  send "${UNISYS_USER}\\r"
-                  expect "Password:"
-                  send "${UNISYS_PASS}\\r"
-                  expect "OK"
-                  send "COMPILE ${name}/SOURCE\\r"
-                  expect "OK"
-                  send "BYE\\r"
-                '
-              """
-            }
-          }
-        }
-      }
-    }
+    // stage('Compile COBOL on Unisys') {
+    //   when {
+    //     expression {
+    //       fileExists("${CHANGED_FILES_DIR}/cobol_files.txt") &&
+    //       readFile("${CHANGED_FILES_DIR}/cobol_files.txt").trim()
+    //     }
+    //   }
+    //   steps {
+    //     script {
+    //       def cobolFiles = readFile("${CHANGED_FILES_DIR}/cobol_files.txt").trim()
+    //       cobolFiles.split('\n').each { file ->
+    //         def name = file.trim()
+    //         if (name) {
+    //           echo "Compiling COBOL on Unisys: ${name}"
+    //           sh """
+    //             expect -c '
+    //               spawn telnet ${UNISYS_HOST}
+    //               expect "Userid:"
+    //               send "${UNISYS_USER}\\r"
+    //               expect "Password:"
+    //               send "${UNISYS_PASS}\\r"
+    //               expect "OK"
+    //               send "COMPILE ${name}/SOURCE\\r"
+    //               expect "OK"
+    //               send "BYE\\r"
+    //             '
+    //           """
+    //         }
+    //       }
+    //     }
+    //   }
+    // }
 
     // ── Stage 7 ────────────────────────────────────────────────────
-    stage('Submit WFL job on Unisys') {
-      when {
-        expression {
-          fileExists("${CHANGED_FILES_DIR}/wfl_files.txt") &&
-          readFile("${CHANGED_FILES_DIR}/wfl_files.txt").trim()
-        }
-      }
-      steps {
-        script {
-          def wflFiles = readFile("${CHANGED_FILES_DIR}/wfl_files.txt").trim()
-          wflFiles.split('\n').each { file ->
-            def name = file.trim()
-            if (name) {
-              echo "Submitting WFL job: ${name}"
-              sh """
-                expect -c '
-                  spawn telnet ${UNISYS_HOST}
-                  expect "Userid:"
-                  send "${UNISYS_USER}\\r"
-                  expect "Password:"
-                  send "${UNISYS_PASS}\\r"
-                  expect "OK"
-                  send "START ${name}\\r"
-                  expect "OK"
-                  send "BYE\\r"
-                '
-              """
-            }
-          }
-        }
-      }
-    }
+    // stage('Submit WFL job on Unisys') {
+    //   when {
+    //     expression {
+    //       fileExists("${CHANGED_FILES_DIR}/wfl_files.txt") &&
+    //       readFile("${CHANGED_FILES_DIR}/wfl_files.txt").trim()
+    //     }
+    //   }
+    //   steps {
+    //     script {
+    //       def wflFiles = readFile("${CHANGED_FILES_DIR}/wfl_files.txt").trim()
+    //       wflFiles.split('\n').each { file ->
+    //         def name = file.trim()
+    //         if (name) {
+    //           echo "Submitting WFL job: ${name}"
+    //           sh """
+    //             expect -c '
+    //               spawn telnet ${UNISYS_HOST}
+    //               expect "Userid:"
+    //               send "${UNISYS_USER}\\r"
+    //               expect "Password:"
+    //               send "${UNISYS_PASS}\\r"
+    //               expect "OK"
+    //               send "START ${name}\\r"
+    //               expect "OK"
+    //               send "BYE\\r"
+    //             '
+    //           """
+    //         }
+    //       }
+    //     }
+    //   }
+    // }
 
   }
 
