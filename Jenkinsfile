@@ -68,6 +68,28 @@ pipeline {
                 ])
             }
         }
+        stage('Ensure Z: network drive') {
+            when { changeRequest() }
+            // agent { label 'windows' }   // uncomment if 'agent any' might land on a non-Windows node
+            steps {
+                // Drive mapping to a server almost always needs auth — store these as a
+                // Jenkins "Username with password" credential and reference its ID here.
+                echo "inside network drive creation stage"
+                withCredentials([usernamePassword(credentialsId: 'z-drive-creds',
+                                                usernameVariable: 'ZUSER',
+                                                passwordVariable: 'ZPASS')]) {
+                    bat '''
+                        net use Z: >nul 2>&1
+                        if %ERRORLEVEL%==0 (
+                            echo Z: is already mapped - reusing existing connection.
+                        ) else (
+                            echo Z: not present - mapping to \\\\10.62.147.234 ...
+                            net use Z: \\\\10.62.147.234\\_HOME_ %ZPASS% /user:%ZUSER% /persistent:no
+                        )
+                    '''
+                }
+            }
+        }
 
         // ----------------------------------------------------------------------
         // stage('Deploy') {
