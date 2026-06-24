@@ -6,8 +6,8 @@
 006000*                                                                *            
 007000* COBOL CLASS - PROGRAM 01                                       *            
 008000*                                                                *            
-009000* HELLO WORLD PROGRAM                                            *            
-010000*                                                                *            
+009000* HELLO WORLD PROGRAMm                                           *            
+010000* **********                                                     *            
 011000******************************************************************            
 012000 ENVIRONMENT DIVISION.                                                        
 013000 DATA DIVISION.                                                               
