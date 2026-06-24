@@ -23,7 +23,8 @@
 023000     DISPLAY WS-HELLO-LITS.                                                   
 023250     DISPLAY "GIT COMMIT TEST".                                               
 023500     DISPLAY "BRANCH CREATION TEST".                                          
-023750     DISPLAY "QUITING".                                                       
+023666     DISPLAY "GIT COMMIT TEST 2".                                             
+023832     DISPLAY "STASH TEST".                                                    
 024000                                                                              
 025000     STOP RUN.                                                                
 026000   P0000-EXIT. EXIT.                                                          
