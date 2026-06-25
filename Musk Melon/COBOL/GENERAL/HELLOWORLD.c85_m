@@ -29,10 +29,8 @@
 023958     DISPLAY "GENERAL CHANGES EDITED".                                        
 023979     DISPLAY "ANOTHER COMMIT TO TEST IP".                                     
 023989     DISPLAY "COMMIT 2 TO TEST IP".                                           
-023991     DISPLAY "COMMIT TO TEST COMPARE".                                        
-023993     DISPLAY "THIS LINE WILL BE THERE IN REPO".                               
-023995     DISPLAY "LINE WAS REPLACED".                                             
-023997     DISPLAY "NEW LINE ADDED.".                                               
+023991*    ADDED LINE COMMENT                                                       
+023995     DISPLAY "ADDED ANOTHER LINE".                                            
 024000                                                                              
 025000     STOP RUN.                                                                
 026000   P0000-EXIT. EXIT.                                                          
