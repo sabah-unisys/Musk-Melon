@@ -83,8 +83,8 @@ pipeline {
                         if %ERRORLEVEL%==0 (
                             echo Z: is already mapped - reusing existing connection.
                         ) else (
-                            echo Z: not present - mapping to \\\\10.62.147.234 ...
-                            net use Z: \\\\10.62.147.234\\_HOME_ %ZPASS% /user:%ZUSER% /persistent:no
+                            echo Z: not present - mapping to \\\\192.168.16.5 ...
+                            net use Z: \\\\192.168.16.5\\_HOME_ %ZPASS% /user:%ZUSER% /persistent:no
                         )
                     '''
                 }
