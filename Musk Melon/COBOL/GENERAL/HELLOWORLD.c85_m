@@ -31,7 +31,8 @@
 023989     DISPLAY "COMMIT 2 TO TEST IP".                                           
 023991*    ADDED LINE COMMENT                                                       
 023995     DISPLAY "ADDED ANOTHER LINES".                                           
-023997*    ADDED ANOTHER LINE COMMENT                                               
+023997*    ADDED ANOTHER LINE                                                       
+023998*    another comment                                                          
 024000                                                                              
 025000     STOP RUN.                                                                
 026000   P0000-EXIT. EXIT.                                                          
