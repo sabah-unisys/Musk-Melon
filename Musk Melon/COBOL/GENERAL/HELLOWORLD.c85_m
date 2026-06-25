@@ -25,10 +25,13 @@
 023500     DISPLAY "BRANCH CREATION TEST2".                                         
 023666     DISPLAY "GIT COMMIT TEST 2S".                                            
 023832     DISPLAY "STASH TEST88".                                                  
-023916     DISPLAY "COMMENT 99".                                                    
+023916     DISPLAY "COMMENT 9782".                                                  
 023958     DISPLAY "GENERAL CHANGES EDITED".                                        
 023979     DISPLAY "ANOTHER COMMIT TO TEST IP".                                     
 023989     DISPLAY "COMMIT 2 TO TEST IP".                                           
+023991     DISPLAY "COMMIT TO TEST COMPARE".                                        
+023993     DISPLAY "THIS LINE WILL BE THERE IN REPO".                               
+023995     DISPLAY "NOT IN MCP".                                                    
 024000                                                                              
 025000     STOP RUN.                                                                
 026000   P0000-EXIT. EXIT.                                                          
