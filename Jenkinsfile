@@ -90,6 +90,21 @@ pipeline {
                 }
             }
         }
+        stage('Compare with Z: (mcpcopy)') {
+            when { changeRequest() }
+    // agent { label 'windows' }   // this node needs Z: mapped + mcpcopy.exe on PATH
+            steps {
+                bat 'powershell -NoProfile -ExecutionPolicy Bypass -File ci\\compare-report.ps1'
+                publishHTML(target: [
+                    reportName           : 'MCP vs Z: Diff',
+                    reportDir            : '.',
+                    reportFiles          : "pr_${env.CHANGE_ID}_z_diff_report.html",
+                    keepAll              : true,
+                    alwaysLinkToLastBuild: true,
+                    allowMissing         : true
+                ])
+            }
+        }
 
         // ----------------------------------------------------------------------
         // stage('Deploy') {
