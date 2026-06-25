@@ -26,7 +26,8 @@
 023666     DISPLAY "GIT COMMIT TEST 2S".                                            
 023832     DISPLAY "STASH TEST7".                                                   
 023916     DISPLAY "COMMENT 7".                                                     
-023958     DISPLAY "GENERAL CHANGES 7".                                             
+023958     DISPLAY "GENERAL CHANGES EDITED".                                        
+023979     DISPLAY "ANOTHER COMMIT TO TEST IP".                                     
 024000                                                                              
 025000     STOP RUN.                                                                
 026000   P0000-EXIT. EXIT.                                                          
