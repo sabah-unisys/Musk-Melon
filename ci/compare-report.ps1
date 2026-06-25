@@ -89,8 +89,8 @@ foreach ($raw in Get-Content $listFile) {
     $wsFile = $f                                   # PR version, in the workspace
 
     # ---- 2. copy from Z: with mcpcopy --------------------------------------
-    Write-Host "mcpcopy.exe `"$src`" `"$tmp`" /Z:RS /C /Q"
-    & mcpcopy.exe $src $tmp /Z:RS /C /Q
+    Write-Host "mcpcopy.exe `"$src`" `"$tmp`" /Z:RS /C /Q /Y /P"
+    & mcpcopy.exe $src $tmp /Z:RS /C /Q /Y /P
     $rc = $LASTEXITCODE
 
     # ---- 3. compare --------------------------------------------------------
