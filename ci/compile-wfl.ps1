@@ -76,8 +76,10 @@ Get-Content $local | ForEach-Object { Write-Host "    $_" }
 # --- copy the WFL to the MCP (same mcpcopy params as deploy) -----------------
 $source = (Resolve-Path -LiteralPath $local).Path
 $dest   = "Z:\INSTALLWFL\COMPILE$pr"
-Write-Host "mcpcopy.exe `"$source`" `"$dest`" /U:W /T /Z:SR /C /Y /Q"
-& mcpcopy.exe $source $dest /U:W /T /Z:SR /C /Y /Q
+# Write-Host "mcpcopy.exe `"$source`" `"$dest`" /U:W /T /Z:SR /C /Y /Q"
+# & mcpcopy.exe $source $dest /U:W /T /Z:SR /C /Y /Q
+Write-Host "mcpcopy.exe `"$source`" `"$dest`" /Z:SR /Y"
+& mcpcopy.exe $source $dest /Z:SR /Y
 if ($LASTEXITCODE -ne 0) { Write-Host "ERROR: mcpcopy of compile WFL failed ($LASTEXITCODE)."; exit 1 }
 
 # --- start the WFL on the MCP via the WFLX named pipe ------------------------
