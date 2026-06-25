@@ -144,6 +144,7 @@ pipeline {
             // agent { label 'windows' }      // same Windows node as Deploy
             steps {
                 // Uses changed_files.txt written by deploy.ps1 in this workspace.
+                bat 'echo CWD=%CD% & dir /b & if exist ci (dir /b ci) else (echo NO ci FOLDER)'
                 bat 'powershell -NoProfile -ExecutionPolicy Bypass -File ci\\compile-wfl.ps1'
                 archiveArtifacts artifacts: 'compile_*.wfl_m',
                                  allowEmptyArchive: true,
