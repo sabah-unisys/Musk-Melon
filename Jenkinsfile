@@ -27,7 +27,7 @@ pipeline {
 
     environment {
         DEFAULT_TARGET = 'master'                       // fallback target branch
-        MCP_EXTENSIONS = 'c74_m c85_m das_m dat_m'    // tracked extensions (case-insensitive)
+        MCP_EXTENSIONS = 'c74_m c85_m das_m dat_m wfl_m'    // tracked extensions (case-insensitive)
     }
 
     stages {
