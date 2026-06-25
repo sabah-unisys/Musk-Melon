@@ -4,7 +4,7 @@
 set -euo pipefail
 
 TARGET="${CHANGE_TARGET:-${DEFAULT_TARGET:-main}}"
-EXT="${MCP_EXTENSIONS:-c74_m c85_m das_m dat_m}"
+EXT="${MCP_EXTENSIONS:-c74_m c85_m das_m dat_m wfl_m}"
 
 # Ensure the target branch is available locally to diff against (no webhook needed).
 # Non-fatal: the GitHub Branch Source has usually fetched it already.
