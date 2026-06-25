@@ -112,6 +112,44 @@ pipeline {
         //     steps { echo 'Deploy MCP files to target environment...' }
         // }
         // ----------------------------------------------------------------------
+        // ---- CD: deploys only when a developer confirms at the prompt --------
+        stage('Deploy to MCP') {
+            // agent { label 'windows' }      // needs Z: mapped + mcpcopy.exe on PATH
+            steps {
+                script {
+                    def proceed = true
+                    try {
+                        // Pause and ask the developer whether to deploy.
+                        timeout(time: 30, unit: 'MINUTES') {
+                            input message: 'Deploy the changed MCP files to Z: now?',
+                                  ok: 'Deploy'
+                        }
+                    } catch (err) {
+                        proceed = false
+                        echo 'Deployment not confirmed (declined or timed out) - skipping deploy.'
+                    }
+
+                    if (proceed) {
+                        checkout scm
+                        bat 'powershell -NoProfile -ExecutionPolicy Bypass -File ci\\deploy.ps1'
+                        archiveArtifacts artifacts: 'deployed_files.txt, changed_files.txt',
+                                         allowEmptyArchive: true,
+                                         fingerprint: true
+                    }
+                }
+            }
+        }
+
+        stage('Compile COBOL on MCP') {
+            // agent { label 'windows' }      // same Windows node as Deploy
+            steps {
+                // Uses changed_files.txt written by deploy.ps1 in this workspace.
+                bat 'powershell -NoProfile -ExecutionPolicy Bypass -File ci\\compile-wfl.ps1'
+                archiveArtifacts artifacts: 'compile_*.wfl_m',
+                                 allowEmptyArchive: true,
+                                 fingerprint: true
+            }
+        }
     }
 
     post {
