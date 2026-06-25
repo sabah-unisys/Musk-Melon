@@ -83,7 +83,7 @@ Write-Host "mcpcopy.exe `"$source`" `"$dest`" /Z:SR /Y"
 if ($LASTEXITCODE -ne 0) { Write-Host "ERROR: mcpcopy of compile WFL failed ($LASTEXITCODE)."; exit 1 }
 
 # --- start the WFL on the MCP via the WFLX named pipe ------------------------
-$pipe = "\\192.168.16.5\PIPE\WFLX\INSTALLWFL/COMPILE$pr"
+$pipe = "\\192.168.16.5\PIPE\WFLX\T10MR\INSTALLWFL/COMPILE$pr"
 Write-Host "Starting compile WFL: MORE < $pipe"
 cmd /c "MORE < $pipe"
 if ($LASTEXITCODE -ne 0) { Write-Host "ERROR: starting compile WFL failed ($LASTEXITCODE)."; exit 1 }
