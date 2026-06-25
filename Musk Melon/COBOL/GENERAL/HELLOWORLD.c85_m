@@ -31,7 +31,8 @@
 023989     DISPLAY "COMMIT 2 TO TEST IP".                                           
 023991     DISPLAY "COMMIT TO TEST COMPARE".                                        
 023993     DISPLAY "THIS LINE WILL BE THERE IN REPO".                               
-023995     DISPLAY "NOT IN MCP".                                                    
+023995     DISPLAY "LINE WAS REPLACED".                                             
+023997     DISPLAY "NEW LINE ADDED.".                                               
 024000                                                                              
 025000     STOP RUN.                                                                
 026000   P0000-EXIT. EXIT.                                                          
