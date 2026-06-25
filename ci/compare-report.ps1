@@ -20,6 +20,10 @@ $listFile = 'changed_files.txt'
 $report   = "pr_${changeId}_z_diff_report.html"
 $changes  = "pr_${changeId}_z_changes.txt"
 
+# MCP / fixed-format COBOL source area: compare only the first $cols columns
+# (1-72 inclusive); anything in the sequence/ID area (73+) is ignored.
+$cols = 72
+
 # ---- 1. temp folder --------------------------------------------------------
 $tmp = Join-Path $env:TEMP ("mcp_z_{0}_{1}" -f $changeId, $env:BUILD_NUMBER)
 if (Test-Path $tmp) { Remove-Item $tmp -Recurse -Force }
@@ -29,6 +33,13 @@ Write-Host "Temp folder: $tmp"
 function Esc([string]$s) {
     if ($null -eq $s) { return "" }
     return $s.Replace('&','&amp;').Replace('<','&lt;').Replace('>','&gt;')
+}
+
+# Read a file and return its lines, each truncated to the first $cols characters.
+function Get-TruncatedLines([string]$path) {
+    Get-Content -LiteralPath $path | ForEach-Object {
+        if ($_.Length -gt $cols) { $_.Substring(0, $cols) } else { $_ }
+    }
 }
 
 # ---- HTML header (identical CSS to the PR diff report) ---------------------
@@ -66,9 +77,14 @@ foreach ($raw in Get-Content $listFile) {
     $f = $raw.Trim()
     if (-not $f) { continue }
 
-    # source on the mapped drive (honours the literal 'Musk-Melon/' -> 'Z:/' rule)
-    $src    = $f -replace '^Musk-Melon/', 'Z:/'
-    $leaf   = ($src -split '[\\/]')[-1]
+    # source on the mapped drive: drop the top-level project folder, switch to
+    # backslashes, and strip the file extension. Immune to the exact project
+    # folder name (hyphen vs space, renames, etc.).
+    #   'Musk Melon/COBOL/GENERAL/HELLOWORLD.c85_m'  ->  'Z:\COBOL\GENERAL\HELLOWORLD'
+    $src    = $f -replace '^[^/]+/', 'Z:/'      # swap project root for Z:/
+    $src    = $src -replace '/', '\'            # forward slashes -> backslashes
+    $src    = $src -replace '\.[^.\\]+$', ''    # remove the file extension
+    $leaf   = ($src -split '\\')[-1]            # e.g. HELLOWORLD (no extension)
     $copied = Join-Path $tmp $leaf
     $wsFile = $f                                   # PR version, in the workspace
 
@@ -84,7 +100,7 @@ foreach ($raw in Get-Content $listFile) {
         Add-Content $changes ""
         Add-Content $changes "##### [NEW vs Z:] $f  (not on Z:, mcpcopy rc=$rc) #####"
         $i = 0
-        foreach ($cl in (Get-Content -LiteralPath $wsFile)) {
+        foreach ($cl in (Get-TruncatedLines $wsFile)) {
             $i++
             Add-Content $report ('<tr class="add"><td class="ln"></td><td class="ln">' + $i + '</td><td class="code">+' + (Esc $cl) + '</td></tr>')
             Add-Content $changes ("+" + $cl)
@@ -97,8 +113,15 @@ foreach ($raw in Get-Content $listFile) {
     Add-Content $changes ""
     Add-Content $changes "##### [MODIFIED vs Z:] $f #####"
 
+    # Compare only the first $cols columns: write truncated copies of both
+    # sides to the temp folder and diff those.
+    $oldTrunc = Join-Path $tmp ($leaf + '.z72')
+    $newTrunc = Join-Path $tmp ($leaf + '.ws72')
+    Get-TruncatedLines $copied | Set-Content -LiteralPath $oldTrunc -Encoding UTF8
+    Get-TruncatedLines $wsFile | Set-Content -LiteralPath $newTrunc -Encoding UTF8
+
     # unified diff: Z: copy = old side, workspace = new side
-    $diff = & git --no-pager diff --no-index --no-color -- "$copied" "$wsFile" 2>$null
+    $diff = & git --no-pager diff --no-index --no-color -- "$oldTrunc" "$newTrunc" 2>$null
 
     $inbody = $false; $oldn = 0; $newn = 0
     foreach ($dl in $diff) {
