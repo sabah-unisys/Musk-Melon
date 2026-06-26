@@ -35,7 +35,7 @@
 023998*    another comment                                                          
 023999*    ANOTHER COMMENT 12                                                       
 024249                                                                              
-024499     DISPLAY "NEW DISPLAY STATEMENT".                                         
+024499                                                                              
 024624*    ANOTHER COMMENT - 0009                                                   
 024749                                                                              
 025000     STOP RUN.                                                                
