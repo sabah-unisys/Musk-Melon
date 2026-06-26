@@ -11,7 +11,7 @@
 011000* Add them together and                                          *            
 012000* Display the result                                                          
 012333* added comment to test000                                                    
-012666*                                                                             
+012666* COMMENT 999                                                                 
 013000* ****                                                           *            
 014000******************************************************************            
 015000 ENVIRONMENT DIVISION.                                                        
@@ -50,8 +50,9 @@
 048000     DISPLAY "The sum of " WS-ACCEPT-1                                        
 049000                   " and " WS-ACCEPT-2                                        
 050000                    " is " WS-RESULT.                                         
-051000*    line comment                                                             
+051000                                                                              
 051333*    line comment 2                                                           
 051666     DISPLAY "QUITING...".                                                    
+051833*    END                                                                      
 052000     STOP RUN.                                                                
 053000   P0000-EXIT. EXIT.                                                          
