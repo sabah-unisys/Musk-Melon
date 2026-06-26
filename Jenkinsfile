@@ -142,6 +142,20 @@ pipeline {
                                  fingerprint: true
             }
         }
+
+        stage('WFL syntax check') {
+            when { branch 'master' }
+            // agent { label 'windows' }      // same Windows node as Deploy
+            steps {
+                // Uses changed_files.txt written by deploy.ps1 in this workspace.
+                // Generates a syntax-check WFL for every changed .wfl_m, copies it
+                // to Z:\INSTALLWFL\SYNTAX<PR>, and starts it via the WFLX pipe.
+                bat 'powershell -NoProfile -ExecutionPolicy Bypass -File ci\\syntaxcheck-wfl.ps1'
+                archiveArtifacts artifacts: 'syntaxcheck_*.wfl_m',
+                                 allowEmptyArchive: true,
+                                 fingerprint: true
+            }
+        }
     }
 
     post {
