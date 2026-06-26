@@ -1,20 +1,24 @@
 // ==============================================================================
 // Jenkins Multibranch Pipeline for Unisys MCP files (Musk-Melon repo)
 //
-// Trigger model : Pull-request only, via periodic repo scan (no webhook needed).
+// Trigger model : Pull-request + master, via periodic repo scan (no webhook needed).
 //                 Configure in the Multibranch job:
 //                   - Branch Sources > GitHub > Behaviours:
 //                         "Discover pull requests from origin"
 //                            Strategy: "The current pull request revision"
+//                         "Discover branches"            (required for the master build)
 //                   - Scan Repository Triggers > [x] Periodically if not
 //                         otherwise run  ->  e.g. 2 minutes   (this is the poll)
 //
-// What it does  : ci/changed-files.sh  - list changed MCP files -> changed_files.txt
+// CI (on PRs)   : ci/changed-files.sh  - list changed MCP files -> changed_files.txt
 //                 ci/show-changes.sh    - per-file changes in the build log
 //                 ci/diff-report.sh     - styled HTML diff report (HTML Publisher)
-//                 All logic lives in the ci/ scripts; this file just orchestrates.
+//                 ci/compare-report.ps1 - PR files vs the Z: copies (mcpcopy)
 //
-// Deployment    : add a 'Deploy' stage where indicated below.
+// CD (on master): ci/deploy.ps1      - mcpcopy merged files to Z:
+//                 ci/compile-wfl.ps1 - generate + copy + start the compile WFL
+//                 The GitHub merge is the approval gate: CD runs automatically
+//                 on the master build that fires after a PR is merged.
 // ==============================================================================
 
 pipeline {
@@ -68,6 +72,7 @@ pipeline {
                 ])
             }
         }
+
         stage('Ensure Z: network drive') {
             when { changeRequest() }
             // agent { label 'windows' }   // uncomment if 'agent any' might land on a non-Windows node
@@ -90,6 +95,7 @@ pipeline {
                 }
             }
         }
+
         stage('Compare with Z: (mcpcopy)') {
             when { changeRequest() }
     // agent { label 'windows' }   // this node needs Z: mapped + mcpcopy.exe on PATH
@@ -107,40 +113,25 @@ pipeline {
         }
 
         // ----------------------------------------------------------------------
-        // stage('Deploy') {
-        //     when { changeRequest() }
-        //     steps { echo 'Deploy MCP files to target environment...' }
-        // }
+        // CD: runs automatically on the master build (i.e. after a PR is merged).
+        //     The GitHub merge is the approval gate — no manual input prompt.
         // ----------------------------------------------------------------------
-        // ---- CD: deploys only when a developer confirms at the prompt --------
         stage('Deploy to MCP') {
+            when { branch 'master' }
             // agent { label 'windows' }      // needs Z: mapped + mcpcopy.exe on PATH
             steps {
-                script {
-                    def proceed = true
-                    try {
-                        // Pause and ask the developer whether to deploy.
-                        timeout(time: 30, unit: 'MINUTES') {
-                            input message: 'Deploy the changed MCP files to Z: now?',
-                                  ok: 'Deploy'
-                        }
-                    } catch (err) {
-                        proceed = false
-                        echo 'Deployment not confirmed (declined or timed out) - skipping deploy.'
-                    }
-
-                    if (proceed) {
-                        checkout scm
-                        bat 'powershell -NoProfile -ExecutionPolicy Bypass -File ci\\deploy.ps1'
-                        archiveArtifacts artifacts: 'deployed_files.txt, changed_files.txt',
-                                         allowEmptyArchive: true,
-                                         fingerprint: true
-                    }
-                }
+                // The PR-only 'Checkout' stage above does not run on the master
+                // build, so check out the merged source here before deploying.
+                checkout scm
+                bat 'powershell -NoProfile -ExecutionPolicy Bypass -File ci\\deploy.ps1'
+                archiveArtifacts artifacts: 'deployed_files.txt, changed_files.txt',
+                                 allowEmptyArchive: true,
+                                 fingerprint: true
             }
         }
 
         stage('Compile COBOL on MCP') {
+            when { branch 'master' }
             // agent { label 'windows' }      // same Windows node as Deploy
             steps {
                 // Uses changed_files.txt written by deploy.ps1 in this workspace.
