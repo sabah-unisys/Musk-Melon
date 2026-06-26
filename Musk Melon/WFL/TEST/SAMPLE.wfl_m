@@ -1,0 +1,4 @@
+BEGIN JOB SAMPLE;                                                                 00001000
+                                                                                  00002000
+DISPLAY "Hello, World!";                                                          00003000
+END JOB;                                                                          00004000

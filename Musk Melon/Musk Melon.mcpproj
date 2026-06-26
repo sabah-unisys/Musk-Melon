@@ -44,6 +44,7 @@
     <Folder Include="DATA\LOAD\EMPLOYEEDB" />
     <Folder Include="WFL" />
     <Folder Include="WFL\LOAD" />
+    <Folder Include="WFL\TEST" />
   </ItemGroup>
   <ItemGroup>
     <None Include="COBOL\EMPLOYEE\ADDEMPLOYEEDATA.c85_m">
@@ -101,6 +102,13 @@
       </PatchFileLocation>
     </None>
     <None Include="WFL\LOAD\ADDEMPLOYEE.wfl_m">
+      <PatchMode>None</PatchMode>
+      <RelativePath>LocalFile</RelativePath>
+      <SeqDataMarkID>False</SeqDataMarkID>
+      <MCPBuildType Condition=" '$(Configuration)' == 'Debug' ">Custom</MCPBuildType>
+      <MCPBuildType Condition=" '$(Configuration)' == 'Release' ">Custom</MCPBuildType>
+    </None>
+    <None Include="WFL\TEST\SAMPLE.wfl_m">
       <PatchMode>None</PatchMode>
       <RelativePath>LocalFile</RelativePath>
       <SeqDataMarkID>False</SeqDataMarkID>
