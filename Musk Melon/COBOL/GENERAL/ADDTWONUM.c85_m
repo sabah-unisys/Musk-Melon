@@ -50,6 +50,8 @@
 048000     DISPLAY "The sum of " WS-ACCEPT-1                                        
 049000                   " and " WS-ACCEPT-2                                        
 050000                    " is " WS-RESULT.                                         
-051000                                                                              
+051000*    line comment                                                             
+051333*    line comment 2                                                           
+051666     DISPLAY "QUITING...".                                                    
 052000     STOP RUN.                                                                
 053000   P0000-EXIT. EXIT.                                                          
