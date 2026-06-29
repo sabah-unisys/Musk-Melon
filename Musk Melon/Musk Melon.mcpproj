@@ -114,6 +114,7 @@
       <SeqDataMarkID>False</SeqDataMarkID>
       <MCPBuildType Condition=" '$(Configuration)' == 'Debug' ">Custom</MCPBuildType>
       <MCPBuildType Condition=" '$(Configuration)' == 'Release' ">Custom</MCPBuildType>
+      <MappedHostFileLocation>??TESTVM/DISK/(SABAH)/OBJECT/COBOL/EMPLOYEE/SAMPLE</MappedHostFileLocation>
     </None>
   </ItemGroup>
   <PropertyGroup>

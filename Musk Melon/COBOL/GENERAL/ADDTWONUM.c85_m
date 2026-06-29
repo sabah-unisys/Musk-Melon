@@ -51,8 +51,9 @@
 049000                   " and " WS-ACCEPT-2                                        
 050000                    " is " WS-RESULT.                                         
 051000                                                                              
-051333*    line comment 2                                                           
+051333                                                                              
 051666     DISPLAY "QUITING...".                                                    
+051749     DISPLAY "ADDING TWO INTEGER".                                            
 051833*    END                                                                      
 052000     STOP RUN.                                                                
 053000   P0000-EXIT. EXIT.                                                          
