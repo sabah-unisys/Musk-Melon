@@ -1,7 +1,9 @@
 BEGIN JOB SAMPLE;                                                                 00001000
                                                                                   00002000
 DISPLAY "Hello, World!";                                                          00003000
-DISPLAY "ANOTHER LINE";                                                           00003250
+                                                                                  00003250
 DISPLAY "QUITING";                                                                00003500
+DISPLAY "HELLO WORLD 2";                                                          00003583
+%COMMENT 1                                                                        00003666
 %END                                                                              00003750
 END JOB;                                                                          00004000
