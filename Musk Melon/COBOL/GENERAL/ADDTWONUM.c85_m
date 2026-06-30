@@ -42,7 +42,7 @@
 040000                    " is " WS-RESULT.                                         
 041000                                                                              
 042000*    AN ALTERNATE WAY TO DO THE SAME THING FOR THE                            
-043000*    PEOPLE THAT PREFER ALGEBRA TO ENGLISH                                    
+043000*    PEOPLE THAT PREFER ALGEBRA TO MALAYALAM                                  
 044000                                                                              
 045000     MOVE ZERO                   TO WS-RESULT.                                
 046000     COMPUTE WS-RESULT = WS-ACCEPT-1 + WS-ACCEPT-2.                           
@@ -53,7 +53,9 @@
 051000                                                                              
 051333                                                                              
 051666     DISPLAY "QUITING...".                                                    
-051749     DISPLAY "ADDING TWO INTEGER".                                            
+051749     DISPLAY "ADDING TWO numbers".                                            
+051777     DISPLAY "HELLO".                                                         
+051805                                                                              
 051833*    END                                                                      
 052000     STOP RUN.                                                                
 053000   P0000-EXIT. EXIT.                                                          
