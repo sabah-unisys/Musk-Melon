@@ -121,6 +121,8 @@ pipeline {
             when { branch 'master' }
             // agent { label 'windows' }      // needs Z: mapped + mcpcopy.exe on PATH
             steps {
+                // Clean workspace
+                cleanWs()
                 // Runs before Deploy so the current MCP files can be backed up
                 // before they are overwritten. The PR-only 'Checkout' stage above
                 // does not run on the master build, so check out the source here
@@ -136,8 +138,7 @@ pipeline {
             when { branch 'master' }
             // agent { label 'windows' }      // needs Z: mapped + mcpcopy.exe on PATH
             steps {
-                // Clean workspace
-                cleanWs()
+                
                 // The PR-only 'Checkout' stage above does not run on the master
                 // build, so check out the merged source here before deploying.
                 checkout scm
