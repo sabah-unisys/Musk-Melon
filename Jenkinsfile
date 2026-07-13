@@ -15,7 +15,8 @@
 //                 ci/diff-report.sh     - styled HTML diff report (HTML Publisher)
 //                 ci/compare-report.ps1 - PR files vs the Z: copies (mcpcopy)
 //
-// CD (on master): ci/deploy.ps1      - mcpcopy merged files to Z:
+// CD (on master): ci/backup.ps1     - generate + copy + start the backup WFL
+//                 ci/deploy.ps1      - mcpcopy merged files to Z:
 //                 ci/compile-wfl.ps1 - generate + copy + start the compile WFL
 //                 The GitHub merge is the approval gate: CD runs automatically
 //                 on the master build that fires after a PR is merged.
@@ -116,6 +117,21 @@ pipeline {
         // CD: runs automatically on the master build (i.e. after a PR is merged).
         //     The GitHub merge is the approval gate — no manual input prompt.
         // ----------------------------------------------------------------------
+        stage('Backup') {
+            when { branch 'master' }
+            // agent { label 'windows' }      // needs Z: mapped + mcpcopy.exe on PATH
+            steps {
+                // Runs before Deploy so the current MCP files can be backed up
+                // before they are overwritten. The PR-only 'Checkout' stage above
+                // does not run on the master build, so check out the source here
+                // to make ci\backup.ps1 available in the workspace.
+                checkout scm
+                bat 'powershell -NoProfile -ExecutionPolicy Bypass -File ci\\backup.ps1'
+                archiveArtifacts artifacts: 'BACKUPCOPY.wfl_m',
+                                 allowEmptyArchive: true,
+                                 fingerprint: true
+            }
+        }
         stage('Deploy to MCP') {
             when { branch 'master' }
             // agent { label 'windows' }      // needs Z: mapped + mcpcopy.exe on PATH
