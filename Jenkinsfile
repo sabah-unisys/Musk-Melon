@@ -48,7 +48,10 @@ pipeline {
 
         stage('Checkout') {
             when { changeRequest() }
-            steps { checkout scm }
+            steps {
+                cleanWs()
+                checkout scm 
+            }
         }
 
         stage('Changed MCP files') {
