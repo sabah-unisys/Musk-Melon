@@ -14,6 +14,7 @@
 //                 ci/show-changes.sh    - per-file changes in the build log
 //                 ci/diff-report.sh     - styled HTML diff report (HTML Publisher)
 //                 ci/compare-report.ps1 - PR files vs the Z: copies (mcpcopy)
+//                 emailext              - email all generated reports as attachments
 //
 // CD (on master): ci/backup.ps1     - generate + copy + start the backup WFL
 //                 ci/deploy.ps1      - mcpcopy merged files to Z:
@@ -33,6 +34,7 @@ pipeline {
     environment {
         DEFAULT_TARGET = 'master'                       // fallback target branch
         MCP_EXTENSIONS = 'c74_m c85_m das_m dat_m wfl_m'    // tracked extensions (case-insensitive)
+        EMAIL_TO       = 'muhammed.sabah@uniys.com,person2@email.com'      // <-- CI report recipient(s); comma-separated
     }
 
     stages {
@@ -114,6 +116,43 @@ pipeline {
         }
 
         // ----------------------------------------------------------------------
+        // CI (last step): email all the reports generated above as attachments.
+        //   Attaches (whichever exist):
+        //     changed_files.txt                 - list of changed MCP files
+        //     pr_<id>_changes.txt               - per-file changes (text)
+        //     pr_<id>_diff_report.html          - styled HTML PR diff
+        //     pr_<id>_z_diff_report.html        - PR files vs the Z: copies
+        //     pr_<id>_z_changes.txt             - PR vs Z: (text)
+        //   Requires the "Email Extension" plugin + a configured SMTP server
+        //   (Manage Jenkins > System > Extended E-mail Notification).
+        // ----------------------------------------------------------------------
+        stage('Email CI reports') {
+            when { changeRequest() }
+            steps {
+                emailext(
+                    to                  : "${env.EMAIL_TO}",
+                    subject             : "MCP CI reports - PR #${env.CHANGE_ID}: ${env.CHANGE_TITLE}",
+                    mimeType            : 'text/html',
+                    body                : """\
+<p>The CI stage for <b>PR #${env.CHANGE_ID}</b> (<i>${env.CHANGE_TITLE}</i>) has completed.</p>
+<p>The generated reports are attached to this email:</p>
+<ul>
+  <li><code>changed_files.txt</code> - list of changed MCP files</li>
+  <li><code>pr_${env.CHANGE_ID}_changes.txt</code> - per-file changes (text)</li>
+  <li><code>pr_${env.CHANGE_ID}_diff_report.html</code> - styled HTML PR diff report</li>
+  <li><code>pr_${env.CHANGE_ID}_z_diff_report.html</code> - PR files vs the Z: copies</li>
+  <li><code>pr_${env.CHANGE_ID}_z_changes.txt</code> - PR vs Z: (text)</li>
+</ul>
+<p>Full build log: <a href="${env.BUILD_URL}">${env.BUILD_URL}</a></p>
+""",
+                    // Ant-style glob patterns, relative to the workspace.
+                    attachmentsPattern  : "changed_files.txt, pr_${env.CHANGE_ID}_changes.txt, pr_${env.CHANGE_ID}_diff_report.html, pr_${env.CHANGE_ID}_z_diff_report.html, pr_${env.CHANGE_ID}_z_changes.txt",
+                    attachLog           : false
+                )
+            }
+        }
+
+        // ----------------------------------------------------------------------
         // CD: runs automatically on the master build (i.e. after a PR is merged).
         //     The GitHub merge is the approval gate — no manual input prompt.
         // ----------------------------------------------------------------------
@@ -129,7 +168,7 @@ pipeline {
                 // to make ci\backup.ps1 available in the workspace.
                 checkout scm
                 bat 'powershell -NoProfile -ExecutionPolicy Bypass -File ci\\backup.ps1'
-                archiveArtifacts artifacts: 'BACKUPCOPY.wfl_m',
+                archiveArtifacts artifacts: 'backupcopy.wfl_m',
                                  allowEmptyArchive: true,
                                  fingerprint: true
             }
