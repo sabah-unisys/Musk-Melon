@@ -55,7 +55,7 @@
 051666     DISPLAY "QUITING...".                                                    
 051749     DISPLAY "ADDING TWO numbers".                                            
 051777     DISPLAY "HELLO".                                                         
-051791*    TEST BACKUP COMMEN                                                       
+051791*    TEST BACKUP COMMENss                                                     
 051805                                                                              
 051833*    END                                                                      
 052000     STOP RUN.                                                                
