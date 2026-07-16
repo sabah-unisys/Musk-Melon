@@ -34,7 +34,7 @@ pipeline {
     environment {
         DEFAULT_TARGET = 'master'                       // fallback target branch
         MCP_EXTENSIONS = 'c74_m c85_m das_m dat_m wfl_m'    // tracked extensions (case-insensitive)
-        EMAIL_TO       = 'muhammed.sabah@uniys.com,person2@email.com'      // <-- CI report recipient(s); comma-separated
+        EMAIL_TO       = 'muhammed.sabah@unisys.com,person2@email.com'      // <-- CI report recipient(s); comma-separated
     }
 
     stages {
@@ -110,7 +110,7 @@ pipeline {
                 publishHTML(target: [
                     reportName           : 'MCP vs Z: Diff',
                     reportDir            : '.',
-                    reportFiles          : "pr_${env.CHANGE_ID}_z_diff_report.html",
+                    reportFiles          : "pr_${env.CHANGE_ID}_comp_with_file_mcp.html",
                     keepAll              : true,
                     alwaysLinkToLastBuild: true,
                     allowMissing         : true
@@ -124,8 +124,8 @@ pipeline {
         //     changed_files.txt                 - list of changed MCP files
         //     pr_<id>_changes.txt               - per-file changes (text)
         //     pr_<id>_diff_report.html          - styled HTML PR diff
-        //     pr_<id>_z_diff_report.html        - PR files vs the Z: copies
-        //     pr_<id>_z_changes.txt             - PR vs Z: (text)
+        //     pr_<id>_comp_with_file_mcp.html   - PR files vs the Z: copies
+        //     pr_<id>_comp_with_file_mcp.txt    - PR vs Z: (text)
         //   Requires the "Email Extension" plugin + a configured SMTP server
         //   (Manage Jenkins > System > Extended E-mail Notification).
         // ----------------------------------------------------------------------
@@ -143,13 +143,13 @@ pipeline {
   <li><code>changed_files.txt</code> - list of changed MCP files</li>
   <li><code>pr_${env.CHANGE_ID}_changes.txt</code> - per-file changes (text)</li>
   <li><code>pr_${env.CHANGE_ID}_diff_report.html</code> - styled HTML PR diff report</li>
-  <li><code>pr_${env.CHANGE_ID}_z_diff_report.html</code> - PR files vs the Z: copies</li>
-  <li><code>pr_${env.CHANGE_ID}_z_changes.txt</code> - PR vs Z: (text)</li>
+  <li><code>pr_${env.CHANGE_ID}_comp_with_file_mcp.html</code> - PR files compared with file in MCP: copies</li>
+  <li><code>pr_${env.CHANGE_ID}_comp_with_file_mcp.txt</code> - PR files compared with file in MCP: (text)</li>
 </ul>
 <p>Full build log: <a href="${env.BUILD_URL}">${env.BUILD_URL}</a></p>
 """,
                     // Ant-style glob patterns, relative to the workspace.
-                    attachmentsPattern  : "changed_files.txt, pr_${env.CHANGE_ID}_changes.txt, pr_${env.CHANGE_ID}_diff_report.html, pr_${env.CHANGE_ID}_z_diff_report.html, pr_${env.CHANGE_ID}_z_changes.txt",
+                    attachmentsPattern  : "changed_files.txt, pr_${env.CHANGE_ID}_changes.txt, pr_${env.CHANGE_ID}_diff_report.html, pr_${env.CHANGE_ID}_comp_with_file_mcp.html, pr_${env.CHANGE_ID}_comp_with_file_mcp.txt",
                     attachLog           : false
                 )
             }
