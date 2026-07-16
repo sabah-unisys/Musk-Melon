@@ -54,7 +54,7 @@ pipeline {
             }
         }
 
-        stage('Changed MCP files') {
+        stage('Changed Repo files') {
             when { changeRequest() }
             steps { sh 'bash ci/changed-files.sh' }
         }
@@ -102,7 +102,7 @@ pipeline {
             }
         }
 
-        stage('Compare with Z: (mcpcopy)') {
+        stage('Compare with files in MCP') {
             when { changeRequest() }
     // agent { label 'windows' }   // this node needs Z: mapped + mcpcopy.exe on PATH
             steps {
