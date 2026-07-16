@@ -109,7 +109,7 @@ foreach ($raw in Get-Content $listFile) {
         continue
     }
 
-    Add-Content $report ('<div class="file"><div class="fhead"><span class="pill" style="background:#9a6700">modified vs z:</span><span class="fname">' + (Esc $f) + '</span></div><table class="diff"><tbody>')
+    Add-Content $report ('<div class="file"><div class="fhead"><span class="pill" style="background:#9a6700">modified in pr vs file content in MCP</span><span class="fname">' + (Esc $f) + '</span></div><table class="diff"><tbody>')
     Add-Content $changes ""
     Add-Content $changes "##### [MODIFIED vs FILE PRESENT IN MCP] $f #####"
 
