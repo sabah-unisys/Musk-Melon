@@ -143,8 +143,8 @@ pipeline {
   <li><code>changed_files.txt</code> - list of changed MCP files</li>
   <li><code>pr_${env.CHANGE_ID}_changes.txt</code> - per-file changes (text)</li>
   <li><code>pr_${env.CHANGE_ID}_diff_report.html</code> - styled HTML PR diff report</li>
-  <li><code>pr_${env.CHANGE_ID}_comp_with_file_mcp.html</code> - PR files compared with file in MCP: copies</li>
-  <li><code>pr_${env.CHANGE_ID}_comp_with_file_mcp.txt</code> - PR files compared with file in MCP: (text)</li>
+  <li><code>pr_${env.CHANGE_ID}_comp_with_file_mcp.html</code> - PR files compared with file present in MCP: copies</li>
+  <li><code>pr_${env.CHANGE_ID}_comp_with_file_mcp.txt</code> - PR files compared with file present in MCP: (text)</li>
 </ul>
 <p>Full build log: <a href="${env.BUILD_URL}">${env.BUILD_URL}</a></p>
 """,
@@ -223,7 +223,7 @@ pipeline {
         always {
             script {
                 if (env.CHANGE_ID) {
-                    archiveArtifacts artifacts: 'changed_files.txt, pr_*_changes.txt, pr_*_diff_report.html',
+                    archiveArtifacts artifacts: 'changed_files.txt, pr_*_changes.txt, pr_*_diff_report.html, pr_*_comp_with_file_mcp.html, pr_*_comp_with_file_mcp.txt',
                                      allowEmptyArchive: true,
                                      fingerprint: true
                 }
