@@ -6,5 +6,5 @@ DISPLAY "QUITING";                                                              
 DISPLAY "HELLO WORLD 2";                                                          00003583
 %COMMENT 1                                                                        00003666
 %END                                                                              00003750
-%TEST BACKUP COMMIT212ah                                                          00003875
+%TEST BACKUP COMMIT212ahs                                                         00003875
 END JOB;                                                                          00004000
