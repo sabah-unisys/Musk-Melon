@@ -7,8 +7,8 @@
 #   3. diff the Z: copy (current) against the workspace file (the PR version)
 #
 # Produces (same styling as ci/diff-report.sh):
-#   pr_<CHANGE_ID>_z_diff_report.html
-#   pr_<CHANGE_ID>_z_changes.txt
+#   pr_<CHANGE_ID>_comp_with_file_mcp.html
+#   pr_<CHANGE_ID>_comp_with_file_mcp.txt
 #
 # Assumes the entries in changed_files.txt begin with 'Musk-Melon/'.
 # Run from the workspace root, after the Z: drive has been mapped.
@@ -17,8 +17,8 @@ $ErrorActionPreference = 'Stop'
 
 $changeId = $env:CHANGE_ID
 $listFile = 'changed_files.txt'
-$report   = "pr_${changeId}_z_diff_report.html"
-$changes  = "pr_${changeId}_z_changes.txt"
+$report   = "pr_${changeId}_comp_with_file_mcp.html"
+$changes  = "pr_${changeId}_comp_with_file_mcp.txt"
 
 # MCP / fixed-format COBOL source area: compare only the first $cols columns
 # (1-72 inclusive); anything in the sequence/ID area (73+) is ignored.
@@ -44,7 +44,7 @@ function Get-TruncatedLines([string]$path) {
 
 # ---- HTML header (identical CSS to the PR diff report) ---------------------
 $head = @"
-<!doctype html><html><head><meta charset="utf-8"><title>MCP PR #$changeId vs Z:</title>
+<!doctype html><html><head><meta charset="utf-8"><title>PR #$changeId Report</title>
 <style>
 body{font-family:-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;margin:24px;color:#1f2328;background:#fff}
 h1{font-size:18px;margin:0 0 4px} .sub{color:#57606a;font-size:13px;margin-bottom:20px}
@@ -60,7 +60,7 @@ tr.del td.code{background:#ffebe9} tr.del td.ln{background:#ffd7d5}
 tr.hunk td.code{background:#ddf4ff;color:#0550ae} tr.hunk td.ln{background:#ddf4ff}
 .empty{padding:16px;color:#57606a}
 </style></head><body>
-<h1>MCP changes vs Z: &mdash; Pull Request #$changeId</h1>
+<h1>PR changes comparison: &mdash; Pull Request #$changeId</h1>
 <div class="sub">workspace (PR) compared against the current files on Z:</div>
 "@
 Set-Content -LiteralPath $report  -Value $head -Encoding UTF8
@@ -111,7 +111,7 @@ foreach ($raw in Get-Content $listFile) {
 
     Add-Content $report ('<div class="file"><div class="fhead"><span class="pill" style="background:#9a6700">modified vs z:</span><span class="fname">' + (Esc $f) + '</span></div><table class="diff"><tbody>')
     Add-Content $changes ""
-    Add-Content $changes "##### [MODIFIED vs Z:] $f #####"
+    Add-Content $changes "##### [MODIFIED vs FILE PRESENT IN MCP] $f #####"
 
     # Compare only the first $cols columns: write truncated copies of both
     # sides to the temp folder and diff those.
@@ -129,8 +129,11 @@ foreach ($raw in Get-Content $listFile) {
             $inbody = $true
             if ($dl -match '-(\d+)') { $oldn = [int]$Matches[1] }
             if ($dl -match '\+(\d+)') { $newn = [int]$Matches[1] }
-            Add-Content $report ('<tr class="hunk"><td class="ln"></td><td class="ln"></td><td class="code">' + (Esc $dl) + '</td></tr>')
-            Add-Content $changes $dl
+            # Drop git's trailing "section heading" (the code after the closing
+            # @@) so the hunk row shows only the line-number locator.
+            $hunk = $dl -replace '(@@\s+-\d+(?:,\d+)?\s+\+\d+(?:,\d+)?\s+@@).*', '$1'
+            Add-Content $report ('<tr class="hunk"><td class="ln"></td><td class="ln"></td><td class="code">' + (Esc $hunk) + '</td></tr>')
+            Add-Content $changes $hunk
             continue
         }
         if (-not $inbody) { continue }
